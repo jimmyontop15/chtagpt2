@@ -11,7 +11,7 @@ app.use(session({ secret: 'secret-key', resave: false, saveUninitialized: false 
 passport.use(new Strategy({
     clientID: '1314619845886611566',
     clientSecret: '2NevBdonL8BkEvbpwgTIfiujtrQWjwTS',
-    callbackURL: "https://chtagpt2.tiiny.site/callback",
+    callbackURL: "https://nebulabeatz.netlify.app/callback",
     scope: ["identify", "guilds"]
 }, (accessToken, refreshToken, profile, done) => done(null, profile)));
 
