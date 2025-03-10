@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .login-btn, .invite-btn {
+            background-color: #5865F2;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 20px;
+            display: inline-block;
+            margin: 10px;
+        }
+        .stats, .music-player, .commands {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #292b2f;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to Nebula Beatz Dashboard</h1>
+        <a href="/login" class="login-btn" id="login-btn">Login with Discord</a>
+
+        <div id="user-section" style="display: none;">
+            <h2>Hello, <span id="username"></span></h2>
+            <div class="stats">
+                <h2>Bot Statistics</h2>
+                <p>Servers: <span id="serverCount">Loading...</span></p>
+                <p>Users: <span id="userCount">Loading...</span></p>
+            </div>
+
+            <div class="music-player">
+                <h2>Music Player</h2>
+                <button onclick="playMusic()">▶ Play</button>
+                <button onclick="pauseMusic()">⏸ Pause</button>
+            </div>
+
+            <div class="commands">
+                <h2>Command List</h2>
+                <p>!play - Play a song</p>
+                <p>!pause - Pause the music</p>
+                <p>!skip - Skip the current song</p>
+            </div>
+
+            <div id="invite-section">
+                <h2>Invite Nebula Beatz to Your Server</h2>
+                <a id="invite-link" href="#" target="_blank" class="invite-btn">Invite Bot</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchUser() {
+            let response = await fetch('/user');
+            let data = await response.json();
+            if (data.username) {
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('user-section').style.display = 'block';
+                document.getElementById('username').textContent = data.username;
+                document.getElementById('invite-link').href = `https://discord.com/oauth2/authorize?client_id=YOUR_BOT_ID&scope=bot&permissions=8`;
+            }
+        }
+        async function fetchStats() {
+            let response = await fetch('/stats');
+            let data = await response.json();
+            document.getElementById('serverCount').textContent = data.servers;
+            document.getElementById('userCount').textContent = data.users;
+        }
+        function playMusic() { fetch('/music/play'); }
+        function pauseMusic() { fetch('/music/pause'); }
+
+        fetchUser();
+        fetchStats();
+    </script>
+
+</body>
+</html>
